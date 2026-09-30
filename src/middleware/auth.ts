@@ -7,7 +7,7 @@ export function authMiddleware(
 ): void {
   const headerUserId = req.header('X-User-Id');
 
-  if (headerUserId || Number.isNaN(Number(headerUserId))) {
+  if (!headerUserId || Number.isNaN(Number(headerUserId))) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
   }

@@ -22,14 +22,19 @@ router.get('/:id', async (req, res) => {
     }
     const user = await getUserById(id)
     if(!user) {
-        res.status(400).json({error: 'User not found'})
+        res.status(404).json({error: 'User not found'})
         return;
     }
     res.json(user);
 });
 
 router.post('/', async (req,res) => {
-    const user = await createUser(req.body);
+    const { name, email } = req.body ?? {};
+    if (typeof name !== 'string' || typeof email !== 'string' || !name || !email) {
+        res.status(400).json({error: 'name and email are required strings'})
+        return;
+    }
+    const user = await createUser({ name, email });
     res.status(201).json(user);
 });
 
